@@ -3,9 +3,10 @@ from .forms import CreateUserForm
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
-def registerPage(request):
+def register_page(request):
     form = CreateUserForm()
 
     if request.method == "POST":
@@ -13,14 +14,14 @@ def registerPage(request):
         if form.is_valid():
             form.save()
             user = form.cleaned_data.get("username")
-            messages.success(request, "Udało się stworzyć konto " + user)
+            messages.success(request, f"Udało się stworzyć konto - {user}")
             return redirect("login")
 
     context = {"form": form}
     return render(request, "registration_login/register.html", context)
 
 
-def loginPage(request):
+def login_page(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -36,7 +37,7 @@ def loginPage(request):
     context = {}
     return render(request, "registration_login/login.html", context)
 
-
-def logoutUser(request):
+@login_required(login_url='login')
+def logout_user(request):
     logout(request)
     return redirect("login")
