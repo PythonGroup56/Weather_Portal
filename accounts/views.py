@@ -42,3 +42,8 @@ def login_page(request):
 def logout_user(request):
     logout(request)
     return redirect("login")
+
+
+def home(request):
+    context = {}
+    return render(request, "registration_login/home.html", context)
