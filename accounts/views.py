@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from .forms import CreateUserForm
+from .forms import CreateUserForm, ProfileForm
+from .models import Profile
 
 
 def register_page(request):
@@ -43,7 +44,25 @@ def logout_user(request):
     logout(request)
     return redirect("login")
 
+@login_required(login_url="login")
+def account_profile(request):
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST,request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+    
+    else:
+        form = ProfileForm(instance=profile)
+    
+    context = {'form': form}
+    return render (request, 'registration_login/account_settings.html', context)
+
 
 def home(request):
     context = {}
-    return render(request, "registration_login/home.html", context)
+    return render(request, "registration_login/dashboard.html", context)
