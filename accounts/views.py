@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from .forms import CreateUserForm, ProfileForm
-from .models import Profile
+from .forms import CreateUserForm, ProfileForm, UserForm
+
 
 
 def register_page(request):
@@ -44,22 +44,24 @@ def logout_user(request):
     logout(request)
     return redirect("login")
 
+
 @login_required(login_url="login")
 def account_profile(request):
-    try:
-        profile = request.user.profile
-    except Profile.DoesNotExist:
-        profile = Profile(user=request.user)
-
     if request.method == 'POST':
-        form = ProfileForm(request.POST,request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, f'Twoje konto zostało zaktulizowane')
+            return redirect ('account')
     
     else:
-        form = ProfileForm(instance=profile)
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
     
-    context = {'form': form}
+    context = {'user_form': user_form, 'profile_form': profile_form}
     return render (request, 'registration_login/account_settings.html', context)
 
 
