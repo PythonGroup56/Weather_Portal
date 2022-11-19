@@ -9,14 +9,18 @@
           {% csrf_token %}
           <div class="input-group">
             {{ form.as_p}}
-            {% comment %} <input type="text" required class="form-control" name="city" placeholder="Wyszukaj miejsce..."> {% endcomment %}
             <div class="input-group-append">
-              <button class="btn btn-success" type="submit">
-                Szukaj
-              </button>
+              <button class="btn btn-success" type="submit">Szukaj</button>
             </div>
           </div>
         </form>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible alert-danger">
+              <strong>{{message}}</strong>
+    </div>
+ {% endfor %}
+{% endif %}
         <hr>
         <div class="card">
           <div class="card-body">

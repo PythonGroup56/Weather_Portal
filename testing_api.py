@@ -17,7 +17,12 @@
     
 
 
+from weather_portal.settings import BASE_DIR
+
+
 x = {1:1, 2:2}
 
 print(x.get(2))
 # print(x[3])
+
+print (BASE_DIR)
