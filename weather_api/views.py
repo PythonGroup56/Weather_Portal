@@ -1,7 +1,7 @@
 import os
 import requests
-
 from datetime import datetime
+
 from django.contrib import messages
 from django.shortcuts import render
 
@@ -18,12 +18,12 @@ def search(request):
         city_name = request.POST.get("place")
         url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&units=metric&appid={API_KEY}"
 
-        response_json = requests.get(url).json()
-        status = requests.get(url).status_code
+        response = requests.get(url)
 
-        if status == 200:
+        if response.ok == True:
             current_time = datetime.now()
             formatted_time = current_time.strftime("%A, %B %d %Y, %H:%M:%S %p")
+            response_json = response.json()
             city_weather = {
                 "city": city_name,
                 "temperature": response_json["main"]["temp"],
