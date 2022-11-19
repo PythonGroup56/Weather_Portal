@@ -66,6 +66,30 @@ def account_profile(request):
     return render(request, "registration_login/account_settings.html", context)
 
 
+@login_required(login_url="login")
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        user = request.user
+
+        if new_password == confirm_password:
+            success = user.check_password(current_password)
+            if success:
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, 'Twoje hasło zostało zmienione')
+                return redirect('change_password')
+            else:
+                messages.error(request, 'Wprowadź poprawne hasło')
+        else:
+            messages.error(request, 'Hasło nie zgadza się')
+            return redirect('change_password')
+    return render (request, 'registration_login/change_password.html')
+
+
 def home(request):
     context = {}
     return render(request, "registration_login/dashboard.html", context)

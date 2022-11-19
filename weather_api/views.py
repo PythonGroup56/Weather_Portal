@@ -19,7 +19,7 @@ def search(request):
         url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&units=metric&appid={API_KEY}"
 
         response = requests.get(url)
-
+    
         if response.ok == True:
             current_time = datetime.now()
             formatted_time = current_time.strftime("%A, %B %d %Y, %H:%M:%S %p")
