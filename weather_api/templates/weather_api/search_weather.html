@@ -1,0 +1,42 @@
+{% extends 'registration_login/home.html' %}
+{% load static %}
+{% block title %}Twoja aplikacja pogodowa{% endblock title %}
+{% block content %}
+<div class="row justify-content-center my-5">
+    <div class="col-md-6">
+        <div class="mt-4 p-5 bg-success text-white rounded mb-3">
+            <h1><center>Twoja aplikacja pogodowa</center></h1>
+        </div>
+        <form action="." method="POST">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Miejsce</span>
+            </div>
+            <br>
+            {{ form.as_p}}
+          </div>
+          <div class="input-group-append">
+            <button class="btn btn-success" type="submit">Szukaj</button>
+          </div>
+        </form>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible alert-danger">
+              <strong>{{message}}</strong>
+    </div>
+ {% endfor %}
+{% endif %}
+        <hr>
+        <div class="card">
+          <div class="card-body">
+              <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="">
+              <div class="card-text float-end">{{ city_weather.time }}</div>
+              <div class="card-text"><h5>{{ city_weather.city }}</h5></div>
+              <div class="card-text"><h6>{{ city_weather.temperature }}</h6></div>
+              <div class="card-text"><h6>{{ city_weather.description | title }}</h6></div>
+          </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

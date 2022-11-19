@@ -15,16 +15,63 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Profile',
+            name="Profile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(help_text='Imię użytkownika', max_length=64, null=True)),
-                ('last_name', models.CharField(help_text='Nazwisko użytkownika', max_length=64, null=True)),
-                ('email', models.EmailField(help_text='E-mail użytkownika', max_length=254, null=True)),
-                ('profile_pic', models.ImageField(blank=True, default='human_avatar.png', help_text='Zdjęcie użytkownika', null=True, upload_to='')),
-                ('phone', models.CharField(help_text='Telefon użytkownika', max_length=64)),
-                ('date_registration', models.DateTimeField(auto_now_add=True, help_text='Data rejestracji', null=True)),
-                ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        help_text="Imię użytkownika", max_length=64, null=True
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        help_text="Nazwisko użytkownika", max_length=64, null=True
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        help_text="E-mail użytkownika", max_length=254, null=True
+                    ),
+                ),
+                (
+                    "profile_pic",
+                    models.ImageField(
+                        blank=True,
+                        default="human_avatar.png",
+                        help_text="Zdjęcie użytkownika",
+                        null=True,
+                        upload_to="",
+                    ),
+                ),
+                (
+                    "phone",
+                    models.CharField(help_text="Telefon użytkownika", max_length=64),
+                ),
+                (
+                    "date_registration",
+                    models.DateTimeField(
+                        auto_now_add=True, help_text="Data rejestracji", null=True
+                    ),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

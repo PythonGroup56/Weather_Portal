@@ -22,7 +22,8 @@ from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("accounts.urls")),
+    path("weather_api/", include("weather_api.urls")),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT )
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
