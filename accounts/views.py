@@ -3,7 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from .forms import CreateUserForm, ProfileForm, UserForm
+from django.core.mail import send_mail
+from django.conf import settings
+
+from .forms import CreateUserForm, ProfileForm, UserForm, ContactForm
 
 
 def register_page(request):
@@ -65,6 +68,32 @@ def account_profile(request):
     context = {"user_form": user_form, "profile_form": profile_form}
     return render(request, "registration_login/account_settings.html", context)
 
+
+def contact(request):
+    form = ContactForm()
+    if request.method == 'GET':
+        context = {"form": form}
+        return render(request, "registration_login/contact_page.html", context)
+
+   
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            msg_name = form.cleaned_data.get('name')
+            msg_email = form.cleaned_data.get('email')
+            msg_message = form.cleaned_data.get('message')
+
+        send_mail(
+            f'Kontakt od użytkownika {msg_name}',
+            f'Treść wiadomości: {msg_message}',
+            msg_email,
+            [settings.RECIPIENTS_LIST1, settings.RECIPIENTS_LIST2],
+            fail_silently=False
+        )
+
+        return render(request, "registration_login/contact_page.html", {'msg_name': msg_name})
+        
 
 def home(request):
     context = {}

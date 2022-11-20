@@ -30,6 +30,14 @@ DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = []
 
+#EMAIL SEND:
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '9b4e786525df74'
+EMAIL_HOST_PASSWORD = '6a70619e2706ed'
+EMAIL_PORT = '2525'
+EMAIL_USE_TLS = True
+RECIPIENTS_LIST1 = 'kamil@pythonzajecia.com'
+RECIPIENTS_LIST2 = 'mateusz@pythonzajecia.com'
 
 # Application definition
 
