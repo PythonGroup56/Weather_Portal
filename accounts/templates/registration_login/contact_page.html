@@ -1,0 +1,21 @@
+{% extends "registration_login/home.html" %}
+{% block title %}Kontakt{% endblock title %}
+{% block content %}
+
+{% if msg_name %}
+<div class="container-center">
+        <h2>Dziękujemy za wiadomość {{msg_name}}!</h2>
+        <p>Kiedyś odpowiemy...</p>
+        <br><br>
+</div>
+{% else %}
+<div class="container-contact">
+    <form class="form-contact" action="{% url 'contact' %}" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit">Wyślij</button>
+    </form>
+</div>
+{% endif %}
+
+{% endblock content %}

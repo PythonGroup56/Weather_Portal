@@ -45,3 +45,9 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ["profile_pic", "phone"]
+
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=64)
+    email = forms.EmailField()
+    message = forms.CharField(max_length=256, widget=forms.Textarea)

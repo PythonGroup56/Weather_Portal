@@ -3,7 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from .forms import CreateUserForm, ProfileForm, UserForm
+from django.core.mail import send_mail
+from django.conf import settings
+
+from .forms import CreateUserForm, ProfileForm, UserForm, ContactForm
 
 
 def register_page(request):
@@ -66,29 +69,31 @@ def account_profile(request):
     return render(request, "registration_login/account_settings.html", context)
 
 
-@login_required(login_url="login")
-def change_password(request):
-    if request.method == 'POST':
-        current_password = request.POST.get('current_password')
-        new_password = request.POST.get('new_password')
-        confirm_password = request.POST.get('confirm_password')
+def contact(request):
+    form = ContactForm()
+    if request.method == 'GET':
+        context = {"form": form}
+        return render(request, "registration_login/contact_page.html", context)
 
-        user = request.user
+   
+    if request.method == "POST":
+        form = ContactForm(request.POST)
 
-        if new_password == confirm_password:
-            success = user.check_password(current_password)
-            if success:
-                user.set_password(new_password)
-                user.save()
-                messages.success(request, 'Twoje hasło zostało zmienione')
-                return redirect('change_password')
-            else:
-                messages.error(request, 'Wprowadź poprawne hasło')
-        else:
-            messages.error(request, 'Hasło nie zgadza się')
-            return redirect('change_password')
-    return render (request, 'registration_login/change_password.html')
+        if form.is_valid():
+            msg_name = form.cleaned_data.get('name')
+            msg_email = form.cleaned_data.get('email')
+            msg_message = form.cleaned_data.get('message')
 
+        send_mail(
+            f'Kontakt od użytkownika {msg_name}',
+            f'Treść wiadomości: {msg_message}',
+            msg_email,
+            [settings.RECIPIENTS_LIST],
+            fail_silently=False
+        )
+
+        return render(request, "registration_login/contact_page.html", {'msg_name': msg_name})
+        
 
 def home(request):
     context = {}
