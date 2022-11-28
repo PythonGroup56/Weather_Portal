@@ -88,7 +88,7 @@ def contact(request):
             f'Kontakt od użytkownika {msg_name}',
             f'Treść wiadomości: {msg_message}',
             msg_email,
-            [settings.RECIPIENTS_LIST1, settings.RECIPIENTS_LIST2],
+            [settings.RECIPIENTS_LIST],
             fail_silently=False
         )
 
